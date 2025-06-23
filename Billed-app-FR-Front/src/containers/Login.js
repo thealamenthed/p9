@@ -9,27 +9,21 @@ export default class Login {
     this.onNavigate = onNavigate;
     this.PREVIOUS_LOCATION = PREVIOUS_LOCATION;
     this.store = store;
-    const formEmployee = this.document.querySelector(
-      `form[data-testid="form-employee"]`
-    );
+    const formEmployee = this.document.querySelector(`form[data-testid="form-employee"]`);
     formEmployee.addEventListener("submit", this.handleSubmitEmployee);
-    const formAdmin = this.document.querySelector(
-      `form[data-testid="form-admin"]`
-    );
+    const formAdmin = this.document.querySelector(`form[data-testid="form-admin"]`);
     formAdmin.addEventListener("submit", this.handleSubmitAdmin);
   }
   handleSubmitEmployee = (e) => {
     e.preventDefault();
     const user = {
       type: "Employee",
-      email: e.target.querySelector(`input[data-testid="employee-email-input"]`)
-        .value,
-      password: e.target.querySelector(
-        `input[data-testid="employee-password-input"]`
-      ).value,
+      email: e.target.querySelector(`input[data-testid="employee-email-input"]`).value,
+      password: e.target.querySelector(`input[data-testid="employee-password-input"]`).value,
       status: "connected"
     };
     this.localStorage.setItem("user", JSON.stringify(user));
+
     this.login(user)
       .catch((err) => this.createUser(user))
       .then(() => {
@@ -44,11 +38,8 @@ export default class Login {
     e.preventDefault();
     const user = {
       type: "Admin",
-      email: e.target.querySelector(`input[data-testid="admin-email-input"]`)
-        .value,
-      password: e.target.querySelector(
-        `input[data-testid="admin-password-input"]`
-      ).value,
+      email: e.target.querySelector(`input[data-testid="admin-email-input"]`).value,
+      password: e.target.querySelector(`input[data-testid="admin-password-input"]`).value,
       status: "connected"
     };
     this.localStorage.setItem("user", JSON.stringify(user));
