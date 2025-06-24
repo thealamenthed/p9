@@ -36,11 +36,11 @@ export default class {
         .bills()
         .list()
         .then((snapshot) => {
-          // 1. On clone le tableau pour ne pas muter l'original
+          // On clone le tableau pour ne pas muter l'original
           const billsRaw = [...snapshot];
-          // 2. On trie du plus récent au plus ancien (date décroissante)
+          // On trie du plus récent au plus ancien (date décroissante)
           billsRaw.sort((a, b) => new Date(b.date) - new Date(a.date));
-          // 3. On formate chaque bill
+          // On formate chaque bill
           const bills = billsRaw.map((doc) => {
             try {
               return {

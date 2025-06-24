@@ -7,8 +7,8 @@ import BillsUI from "../views/BillsUI.js";
 import {bills} from "../fixtures/bills.js";
 import {ROUTES_PATH} from "../constants/routes.js";
 import {localStorageMock} from "../__mocks__/localStorage.js";
-
 import router from "../app/Router.js";
+import Bills from "../containers/Bills.js";
 
 describe("Given I am connected as an employee", () => {
   describe("When I am on Bills Page", () => {
@@ -37,5 +37,64 @@ describe("Given I am connected as an employee", () => {
       const datesSorted = [...dates].sort(antiChrono);
       expect(dates).toEqual(datesSorted);
     });
+  });
+});
+
+// === TEST 1: getBills should fetch and return sorted, formatted bills ===
+describe("Given I am connected as an employee and Bills are available", () => {
+  test("Then getBills should return bills sorted and formatted", async () => {
+    const storeMock = {
+      bills: () => ({
+        list: () =>
+          Promise.resolve([
+            {id: "1", date: "2022-01-01", status: "pending"},
+            {id: "2", date: "2022-03-01", status: "accepted"}
+          ])
+      })
+    };
+
+    const billsInstance = new Bills({
+      document,
+      onNavigate: jest.fn(),
+      store: storeMock,
+      localStorage: window.localStorage
+    });
+
+    const result = await billsInstance.getBills();
+    expect(result).toHaveLength(2);
+    expect(new Date(result[0].date) >= new Date(result[1].date)).toBe(true);
+  });
+
+  // === TEST 2: getBills with formatting error should still return unformatted date ===
+  test("Then if date formatting fails, getBills returns raw data", async () => {
+    const storeMock = {
+      bills: () => ({
+        list: () => Promise.resolve([{id: "1", date: "bad-date", status: "pending"}])
+      })
+    };
+
+    const billsInstance = new Bills({
+      document,
+      onNavigate: jest.fn(),
+      store: storeMock,
+      localStorage: window.localStorage
+    });
+
+    const result = await billsInstance.getBills();
+    expect(result[0].date).toBe("bad-date");
+    expect(result[0].status).toBe("En attente"); // formatStatus still applied
+  });
+
+  // === TEST 3: getBills with no store should return undefined ===
+  test("Then if store is not defined, getBills should return undefined", async () => {
+    const billsInstance = new Bills({
+      document,
+      onNavigate: jest.fn(),
+      store: null,
+      localStorage: window.localStorage
+    });
+
+    const result = await billsInstance.getBills();
+    expect(result).toBeUndefined();
   });
 });
