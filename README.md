@@ -45,38 +45,71 @@ npm run test
 - Tous les composants dans src/views sont couverts à 100%
 
 - Les composants critiques (Bills.js, NewBill.js) atteignent une couverture ≥ 80%
+  
 
 ## 🔬 Structure des tests
 
-Les tests sont situés dans le dossier `src/__tests__`.
+Tous les tests sont situés dans le dossier `src/__tests__`.
 
 ### 🔹 Tests unitaires
 
-- Testent des comportements isolés (ex. : validation de fichiers, soumission de formulaire)
-- **Fichiers concernés** : `NewBill.js`, `Bills.js`
+Ils vérifient des comportements isolés (validation d’un fichier, affichage d’un bouton, soumission d’un formulaire...).
+
+- 📁 Fichiers concernés :  
+  `NewBill.js`, `Bills.js`, `Dashboard.js`
+
+- 🧪 Exemple :  
+  - Vérification que seuls les fichiers au bon format sont acceptés (`handleChangeFile`)
+  - Soumission du formulaire `NewBill` déclenche `updateBill`
 
 ### 🔹 Tests d’intégration
 
-- Vérifient l'interaction entre le store et les composants (`getBills`, `updateBill`)
-- Mocks d’API intégrés pour simuler des erreurs 404 et 500
+Ils testent l’interaction entre composants et le store (ex. : `getBills`, `updateBill`), avec des appels à une API **mockée**.
+
+- 📁 Fichiers concernés :
+  `NewBill.js`, `Bills.js`, `Dashboard.js`
+
+- 🧪 Incluent :
+  - Un test **GET** des bills (inspiré du test `Dashboard`)
+  - Un test **POST** d'ajout de note de frais (`NewBill`)
+  - Gestion des erreurs **404** et **500**
 
 ### 🔹 Plan de test manuel (E2E)
 
-- Document séparé au format PDF
-- Contient **au moins 10 scénarios** décrivant le parcours employé
-- Structure de scénario :
-  - **Given** : l’état initial
-  - **When** : l’action de l’utilisateur
-  - **Then** : le comportement attendu
+- 📄 Document au format **PDF**
+- 💡 Contient **au moins 10 scénarios** décrivant le parcours employé
+- Utilise la structure **Given / When / Then**
 
 ---
 
 ## 🐛 Bugs corrigés
 
-- ✅ L’icône de menu ne s’activait pas correctement → **corrigé**
-- ✅ L’ordre des notes de frais était inversé → **corrigé**
-- ✅ L’upload de fichiers `.pdf` était autorisé → **bloqué**
-- ✅ Les erreurs API `404` et `500` n’étaient pas gérées → **mockées et testées**
+Liste extraite du rapport Notion :
+
+### [Bills] L’ordre des notes de frais était inversé
+
+- Le tri se faisait par défaut dans le mauvais ordre.
+- ✅ Corrigé : les dates sont maintenant triées du plus récent au plus ancien.
+
+### [Login] L’administrateur ne naviguait pas vers Dashboard
+
+- Le test échouait à cause d’une mauvaise redirection.
+- ✅ Corrigé : la navigation vers Dashboard fonctionne avec les bons identifiants admin.
+
+### [NewBill] L’upload de fichiers invalides ne bloquait pas
+
+- Les fichiers `.pdf` passaient malgré l’interface.
+- ✅ Corrigé : seuls les formats `.jpg`, `.jpeg` et `.png` sont désormais acceptés dans le formulaire `NewBill`.
+
+### [Dashboard] Les listes de tickets se bloquaient
+
+- Après avoir ouvert une liste (ex. : "validé"), impossible d’en ouvrir une autre (ex. : "refusé").
+- ✅ Corrigé : on peut maintenant naviguer librement entre les statuts.
+
+### [Justificatifs] Les images ne s’affichaient pas dans les modales
+
+- Problème d’extension, ou `fileName` null côté admin.
+- ✅ Corrigé : la modale affiche bien les justificatifs.
 
 ---
 
@@ -84,13 +117,13 @@ Les tests sont situés dans le dossier `src/__tests__`.
 
 ```bash
 ├── src
-│   ├── app
-│   ├── components
-│   ├── containers
-│   ├── views
-│   └── __tests__          # Tous les fichiers de test
-├── __mocks__              # Mocks Jest (store, localStorage)
-├── coverage               # Rapport de couverture Jest
+│   ├── app              # Navigation
+│   ├── components       # Composants UI (modale, icônes...)
+│   ├── containers       # Logique des pages (Bills, NewBill...)
+│   ├── views            # UI des pages
+│   └── __tests__        # Fichiers de test Jest
+├── __mocks__            # Mocks Jest (store, localStorage)
+├── coverage             # Rapport de couverture Jest
 ├── README.md
 
 
