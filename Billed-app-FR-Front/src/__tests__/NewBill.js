@@ -9,6 +9,7 @@ import {ROUTES_PATH} from "../constants/routes.js";
 import {localStorageMock} from "../__mocks__/localStorage.js";
 
 // === TESTS D'INTÉGRATION — Vérifie que les erreurs d'API sont bien gérées ===
+
 test("Affiche une erreur si updateBill échoue avec 404", async () => {
   // On simule la fonction console.error pour vérifier plus tard si elle est appelée
   const consoleErrorMock = jest.spyOn(console, "error").mockImplementation(() => {});

@@ -13,7 +13,7 @@ import Bills from "../containers/Bills.js";
 // === TESTS UNITAIRES — Vérifie les éléments à l'écran et le tri des dates ===
 describe("Given I am connected as an employee", () => {
   describe("When I am on Bills Page", () => {
-    // === Test 1 — L'icône "bills" est bien surlignée (actif) ===
+    // === Test 1 — L'icône "bills" est bien actif ===
     test("Then bill icon in vertical layout should be highlighted", async () => {
       Object.defineProperty(window, "localStorage", {value: localStorageMock});
       window.localStorage.setItem(

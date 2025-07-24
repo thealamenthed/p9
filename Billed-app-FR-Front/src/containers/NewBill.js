@@ -47,18 +47,20 @@ export default class NewBill {
           noContentType: true
         }
       })
-      .then(({fileUrl, key}) => {
-        console.log(fileUrl);
+      .then(({filePath, key}) => {
+        const fileUrl = `/${filePath}`;
+        console.log("UPLOAD OK", fileUrl, key);
         this.billId = key;
         this.fileUrl = fileUrl;
         this.fileName = fileName;
       })
+
       .catch((error) => console.error(error));
   };
-
+  // Gère l'envoi du formulaire
   handleSubmit = (e) => {
     e.preventDefault();
-    console.log('e.target.querySelector(`input[data-testid="datepicker"]`).value', e.target.querySelector(`input[data-testid="datepicker"]`).value);
+
     const email = JSON.parse(localStorage.getItem("user")).email;
     const bill = {
       email,
